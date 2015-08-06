@@ -5,9 +5,10 @@ include 'user.inc.php';
 if (empty($_SESSION["user_session"])){
     header("Location:index.php");
 }
-
+// récupperation de l'identifiant de la session
 $user_id = $_SESSION["user_session"];
 $action = isset($_GET["action"])?$_GET["action"]:"";
+
 if (!empty($_GET["id"])){
 switch ($action){
     case 'modifier':

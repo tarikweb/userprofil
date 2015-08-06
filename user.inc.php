@@ -58,16 +58,40 @@ function user_logout($db_connexion){
 }
 // fonction de modification de l'utilisateur
 function user_update($user_id , $db_connexion){
-	
+	// Récuperation de profil
 	$sql = 'SELECT * FROM users where id_user=:user';
 	$stmt = $db_connexion->prepare($sql);
-	$stmt->execute(array(":id_user" =>$user_id));
+	$stmt->execute(array(":user" =>$user_id));
 	$row_user = $stmt->fetch();
-    var_dump();
 
+	$form = '<form action="" method="post">
+            <div class="form-group">
+                <input type="text" class="form-control" name="user_name" placeholder="Username " value="'.$row_user['user_name'].'" />
+            </div>  
+             <div class="form-group">
+                <input type="text" class="form-control" name="user_mail" placeholder="Usermail " value="'.$row_user['user_email'].'"  />
+            </div> 
+            <div class="form-group">
+                <input type="password" class="form-control" name="user_pass" placeholder="Password "   />
+            </div> 
+            <div class="form-group">
+                <input type="type" class="form-control" name="user_firstname" placeholder="Firstname"   />
+            </div> 
+            <div class="form-group">
+                <input type="password" class="form-control" name="user_lastname" placeholder="Lastname"   />
+            </div> 
+            <div class="form-group">
+                <input type="password" class="form-control" name="user_lastname" placeholder="Adress"   />
+            </div> 
+            <div class="form-group">
+                <input type="password" class="form-control" name="user_lastname" placeholder="Zip code"   />
+            </div> 
+            <div class="form-group">
+                <input type="submit" name="btn-update" class="btn btn-block btn-primary" value="Modifier" >
+            </div>
 
-	$from = "";
-
+           </form>';
+  return $form;
 
 }
 // fonction d'ajout d'un utilisateur

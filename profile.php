@@ -9,13 +9,19 @@ if (empty($_SESSION["user_session"])){
 $user_id = $_SESSION["user_session"];
 $action = isset($_GET["action"])?$_GET["action"]:"";
 
-if (!empty($_GET["id"])){
 switch ($action){
     case 'modifier':
-    user_update($user_id, $db_connexion); // fonction modification / ajoute de nouvelles données sur le profil
+       if (!empty($_GET["id"])){
+          $out = user_update($user_id, $db_connexion);
+          
+       }
+     // fonction modification ajout de nouvelles données sur le profil
     break;
     case 'image': // fonction d'upload d'image
-    user_image_upload($user_id, $db_connexion);
+       if (!empty($_GET["id"])){
+           user_image_upload($user_id, $db_connexion);
+          $out  = '';
+        }
     break;
     default:
     // Récupperation de profil de l'utiisateur en cours
@@ -28,9 +34,14 @@ switch ($action){
     }catch(PDOException $e){
        echo $e->getMessage();
     }
+    $out = '';
+    $out .= "Votre pseudo : ".$user["user_name"]."<br/>";
+    $out .= "Votre email : ".$user["user_email"]."<br/>";
+    $out .= "Vous êtes membre depuis : ".$user["date_created"]."<br/>";
+    $out .= "Dernière connexion : ".$user["last_login"]."<br/>" ;
+
     break;
   }
-}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -53,20 +64,11 @@ switch ($action){
 
     		</ul>
     	</div>
-    	<div class="col-md-9">
-            <?php
-
-
-            ?>
-
+    	<div class="col-md-9"> 
         <p>Bienvenu sur Votre profil</p>
-        <?php 
-         echo "Votre pseudo : ".$user["user_name"]."<br/>";
-         echo "Votre email : ".$user["user_email"]."<br/>";
-         echo "Vous êtes membre depuis : ".$user["date_created"]."<br/>";
-         echo "Dernière connexion : ".$user["last_login"]."<br/>"	;
-
-        ?>
+            <?php
+               echo $out;
+            ?>
     	</div>
     </div>
 </div>

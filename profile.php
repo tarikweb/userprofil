@@ -12,6 +12,7 @@ $action = isset($_GET["action"])?$_GET["action"]:"";
 switch ($action){
     case 'modifier':
        if (!empty($_GET["id"])){
+          $user_id = $_GET["id"];
           $out = user_update($user_id, $db_connexion);
           
        }
@@ -19,6 +20,7 @@ switch ($action){
     break;
     case 'image': // fonction d'upload d'image
        if (!empty($_GET["id"])){
+           $user_id = $_GET["id"];
            user_image_upload($user_id, $db_connexion);
           $out  = '';
         }

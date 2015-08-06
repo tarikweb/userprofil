@@ -171,6 +171,7 @@ function user_image_upload($user_id , $db_connexion){
     if(in_array($extension, $extensions)){
       if(move_uploaded_file($fichier_tmp, $dossier.$user_id."_avatar".$extension)){
         try{
+          // SQL ajout de l'image dans le profil user 
           $sql = "UPDATE users SET `user_pic`=:pic WHERE id_user =:user";
           $stmt = $db_connexion->prepare($sql);
           $stmt->execute(array(':pic' => $user_id."_avatar".$extension,

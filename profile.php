@@ -12,6 +12,7 @@ $action = isset($_GET["action"])?$_GET["action"]:"";
 switch ($action){
     case 'modifier':
        if (!empty($_GET["id"])){
+        // récupperation de l'id dans l'url
           $user_id = $_GET["id"];
           $out = user_update($user_id, $db_connexion);
           
@@ -20,9 +21,9 @@ switch ($action){
     break;
     case 'image': // fonction d'upload d'image
        if (!empty($_GET["id"])){
+        // récupperation de l'id dans l'url
            $user_id = $_GET["id"];
-           user_image_upload($user_id, $db_connexion);
-          $out  = '';
+           $out = user_image_upload($user_id, $db_connexion);
         }
     break;
     default:
@@ -37,6 +38,7 @@ switch ($action){
        echo $e->getMessage();
     }
     $out = '';
+    $out .= (!empty($user["user_pic"]))?"<img src='upload/".$user["user_pic"]."' width='100' height='100'>":"";
     $out .= "Votre pseudo : ".$user["user_name"]."<br/>";
     $out .= "Votre email : ".$user["user_email"]."<br/>";
     $out .= "Vous êtes membre depuis : ".$user["date_created"]."<br/>";

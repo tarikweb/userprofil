@@ -162,5 +162,36 @@ function user_update($user_id , $db_connexion){
 }
 // fonction d'ajout d'un utilisateur
 function user_image_upload($user_id , $db_connexion){
-
+  if(isset($_FILES["avatar"])){ // la première entrée au téléchargement
+    $dossier = "upload/";
+    $fichier_tmp = $_FILES["avatar"]["tmp_name"];
+    $fichier = $_FILES["avatar"]["name"];
+    $extension = strrchr($fichier,'.'); // extension de fichier téléchargé
+    $extensions = array('.jpg','.png','.gif','.jpeg');// extensions possibles de fichier à télécharger
+    if(in_array($extension, $extensions)){
+      if(move_uploaded_file($fichier_tmp, $dossier.$user_id."_avatar".$extension)){
+        try{
+          $sql = "UPDATE users SET `user_pic`=:pic WHERE id_user =:user";
+          $stmt = $db_connexion->prepare($sql);
+          $stmt->execute(array(':pic' => $user_id."_avatar".$extension,
+                               ':user' => $user_id
+                         ));
+          $success = "téléchargement réussi de ".$fichier." dans le répertoire upload/";
+        }catch(PDOException $e){
+           echo $e->getMessage();
+        }
+      }else{
+       $errors[] = "echec du téléchargement";
+      }
+    }else{
+      $errors[] = "Vous devez télécharger un fichier de format image : gif , png , jpeg";
+    }
+  } 
+  // formulaire de Téléchrgement d'avatar
+  $form = '<form action="profile.php?action=image&id='.$user_id.'" method="POST" enctype="multipart/form-data"> 
+             <input type="file" name="avatar">
+             <input type="hidden" name="MAX_FILE_SIZE" value="100000">
+             <input type="submit" name="submit">
+           </form>';
+  return $form;
 }

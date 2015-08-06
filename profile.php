@@ -1,7 +1,7 @@
 <?php
 require_once 'db.inc.php';
 include 'user.inc.php';
-
+// Redirection si pas connecté
 if (empty($_SESSION["user_session"])){
     header("Location:index.php");
 }

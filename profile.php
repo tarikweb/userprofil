@@ -8,7 +8,14 @@ if (!empty($_SESSION["user_session"])) {
     $userID = $_SESSION["user_session"];
     $output = '<div class="right bottom-aligned-text"><a href="logout.php?logout=true">Déconnexion</a></div>';
     $output .= '<div class="right"><h1>Bonjour <a href="profile.php">'.user_edit($db_connexion, $userID)['user_name']."</a></h1></div>";
-
+ if(isset($_SESSION["cart"])){
+    $cart = $_SESSION["cart"];
+    var_dump($cart);
+  }
+    $out .= '<br><div >nom du produit : , qty : 
+                <a href="panier.php?action=delete&id=">Supprimer</a>
+                <br/><a href="">Voir mon panier</a>
+                </div>';
 
 }
 else if(empty($_SESSION)){

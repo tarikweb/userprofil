@@ -9,15 +9,18 @@ if (!empty($_SESSION["user_session"])) {
     $userID = $_SESSION["user_session"];
     $out = '<div class="right bottom-aligned-text"><a href="logout.php?logout=true">Déconnexion</a></div>';
    
-    $out .= '<div class="right"><h1>Bonjour <a href="profile.php">'.user_edit($db_connexion, $userID)['user_name']."</a></h1></div>"; 
+    $out .= '<div class="right"><h1>Bonjour <a href="profile.php">'.user_edit($db_connexion, $userID)['user_name']."</a></h1></div><br>"; 
   if(isset($_SESSION["cart"])){
   	$cart = $_SESSION["cart"];
-  	var_dump($cart);
-  }
-    $out .= '<br><div >nom du produit : , qty : 
+  	foreach($cart as $c){
+  		$produit = edit_product($c['id'] , $db_connexion);
+      $out .= '<div >nom du produit '.$produit["nom"].' : , qty :'.$c["qty"].' 
                 <a href="panier.php?action=delete&id=">Supprimer</a>
                 <br/><a href="">Voir mon panier</a>
                 </div>';
+  	}
+  }
+   
 }
 else if(empty($_SESSION)){
     $out = '<form action="login.php" method="post" class="navbar-form navbar-right">
@@ -50,6 +53,7 @@ else if(empty($_SESSION)){
     <body>
         <div class="container">
             <div class="header">
+            	<div class="left"><a href="index.php">logo</a></div>
                 <div class="right">
                        <?php echo $out ?>
                  </div>
@@ -75,9 +79,41 @@ else if(empty($_SESSION)){
 	 // Recupperation de l'id produit
 	 $id = $_GET["id"];
 	 $produit = edit_product($id,$db_connexion);
-	 if(isset($_POST["btn-cart"])){
-	 	$_SESSION["cart"][] = array('id' => $_POST["id_produit"] , 'qty' =>  $_POST["qty"]);
-	 	header("Location:produit.php?id=$id");
+	 if(isset($_POST["btn-cart"])){ 
+	 	// envoi du formulaire 
+	 	if(!empty($_POST["qty"]) && is_numeric($_POST["qty"])){
+	 		// Validation de qty doit etre numerique
+	      if(!isset($_SESSION["cart"])) {
+	      	// element de session panier vide par défaut si on a aucun produit selectioné
+            $_SESSION["cart"][] = array('id' => $_POST["id_produit"],
+                                       	'qty' =>  $_POST["qty"],
+            	                       );
+	 	    header("Location:produit.php?id=$id");
+	      }
+	      else{
+	      	// Si on en a un on voit les produits qui y figurent
+	      	$cart = $_SESSION["cart"];
+            $ids = array();
+            $qtys = array();
+            foreach($cart as $c){
+               $ids[] = $c["id"];
+               $qtys[] = $c["qty"];
+            }
+            if(!in_array($_POST["id_produit"] , $ids)){
+                $_SESSION["cart"][] = array('id' => $_POST["id_produit"], 
+                	                        'qty' =>  $_POST["qty"],
+                	                        );
+            	}
+            	else{
+                $key = array_search($_POST["id_produit"] , $ids);
+                $qt = $qtys[$key];
+                $cart[$key]["qty"] += $_POST["qty"];
+                $_SESSION["cart"] = $cart;
+            	}
+	 	    header("Location:produit.php?id=$id");
+	      }
+	 	}
+	 	
 	 }
 	 echo "<div class='row'>
 	       <div class='col-md-7'>

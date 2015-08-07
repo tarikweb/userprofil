@@ -12,7 +12,7 @@ function user_register($username, $usermail, $userpass, $db_connexion) {
         $stmt->bindparam(':umail', $usermail);
         $stmt->bindparam(':upass', $newpass);
         $stmt->bindparam(':date_created', date("Y-m-d h:i:s"));
-        $stmt->execute(); //execution de la requete 
+        $stmt->execute(); //execution de la requete
         return $stmt; // false si pas d'insertion , true sinon
     }
     catch (PDOException $e) {
@@ -74,7 +74,7 @@ function user_update($user_id, $db_connexion) {
     if (isset($_POST["btn-update"])) {
         $err = '';
         $success = '';
-        // Validation des infos supplémentaires de l'utilisateur 
+        // Validation des infos supplémentaires de l'utilisateur
         if (empty($_POST["user_firstname"])) {
             $errors[] = "Veuillez renseigner votre prénom";
         }
@@ -142,27 +142,27 @@ function user_update($user_id, $db_connexion) {
             . $err
             . '<form action="?action=modifier&id=' . $user_id . '" method="post">
             <div class="form-group">
-                <input type="text" class="form-control" name="user_name" placeholder="Username " value="' . $row_user['user_name'] . '" 
+                <input type="text" class="form-control" name="user_name" placeholder="Username " value="' . $row_user['user_name'] . '"
                 disabled="disabled" />
-            </div>  
+            </div>
              <div class="form-group">
                 <input type="text" class="form-control" name="user_mail" placeholder="Usermail " value="' . $row_user['user_email'] . '" disabled="disabled" />
-            </div> 
+            </div>
             <div class="form-group">
                 <input type="password" class="form-control" name="user_pass" placeholder="Password "   />
-            </div> 
+            </div>
             <div class="form-group">
                 <input type="text" class="form-control" name="user_firstname" placeholder="Firstname"   />
-            </div> 
+            </div>
             <div class="form-group">
                 <input type="text" class="form-control" name="user_lastname" placeholder="Lastname"   />
-            </div> 
+            </div>
             <div class="form-group">
                 <input type="text" class="form-control" name="user_adress" placeholder="Adress"   />
-            </div> 
+            </div>
             <div class="form-group">
                 <input type="text" class="form-control" name="user_zipcode" placeholder="Zip code"   />
-            </div> 
+            </div>
             <div class="form-group">
                 <input type="submit" name="btn-update" class="btn btn-block btn-primary" value="Modifier" >
             </div>
@@ -205,7 +205,7 @@ function user_image_upload($user_id, $db_connexion) {
         }
     }
     // formulaire de Téléchrgement d'avatar
-    $form = '<form action="profile.php?action=image&id=' . $user_id . '" method="POST" enctype="multipart/form-data"> 
+    $form = '<form action="profile.php?action=image&id=' . $user_id . '" method="POST" enctype="multipart/form-data">
              <input type="file" name="avatar">
              <input type="hidden" name="MAX_FILE_SIZE" value="100000">
              <input type="submit" name="submit">
@@ -213,8 +213,16 @@ function user_image_upload($user_id, $db_connexion) {
     return $form;
 }
 
-// fonction de récupperation de l'utilisateur 
-function user_edit($user_id, $db_connexion){
-    
 
+function user_edit($db_connexion, $userID){
+  try {
+    $sql = 'SELECT * FROM users where id_user=:user';
+    $statement = $db_connexion->prepare($sql);
+    $statement->execute(array(':user'=>$userID));
+    $userRow = $statement->fetch();
+    return $userRow;
+  } catch (Exception $e) {
+    echo $e->getMessage();
+  }
 }
+

@@ -3,26 +3,31 @@ require_once 'includes/db.inc.php';
 include 'includes/user.inc.php';
 $out = "";
 if (!empty($_SESSION["user_session"])) {
-    
-   $out = "Bonjour , <a href='logout.php?logout=true'> Déconnexion </a>";
+
+    $userID = $_SESSION["user_session"];
+    $out = '<div class="right bottom-aligned-text"><a href="logout.php?logout=true">Déconnexion</a></div>';
+    $out .= '<div class="right"><h1>Bonjour <a href="profile.php">'.user_edit($db_connexion, $userID)['user_name']."</a></h1></div>";
+
 
 }
 else if(empty($_SESSION)){
-    $out = '<div class="form-container">
-            <form action="login.php" method="post">
-             <h2>Connectez-vous.</h2>
-            <div class="form-group">
-            <input type="text" class="form-control" name="txt_uname_email" placeholder="Username or E mail ID" />
-            
-            <input type="password" class="form-control" name="txt_password" placeholder="Your Password"  />
+    $out = '<form action="login.php" method="post" class="navbar-form navbar-right">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                <input type="text" class="form-control" name="txt_uname_email" placeholder="Pseudo ou e-mail" size="15" required />
             </div>
-            <div class="form-group">
-            <input type="submit" name="btn-login" class="btn btn-block btn-primary" value="Connectez vous">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                <input type="password" class="form-control" name="txt_password" placeholder="Mot de passe" size="15" required />
             </div>
-               
-            <label>vous n\'avez pas de compte<a href="inscription.php">Inscrivez-vous</a></label>
-            </form>
-            </div>';
+            <button type="submit" name="btn-login" class="btn btn-primary">
+                <i class="glyphicon glyphicon-log-in"></i>&nbsp;Connectez vous
+            </button>
+            </br>
+            <div class="right">
+            <label>vous n\'avez pas de compte? <a href="inscription.php">Inscrivez-vous</a></label>
+            </div>
+        </form>';;
 }
 
 
@@ -38,7 +43,7 @@ else if(empty($_SESSION)){
     <body>
         <div class="container">
             <div class="header">
-                <div class="right"> 
+                <div class="right">
                        <?php echo $out ?>
                  </div>
             </div>

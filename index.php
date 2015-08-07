@@ -5,6 +5,9 @@ $out = "";
 if (!empty($_SESSION["user_session"])) {
    $out = "Bonjour , <a href='logout.php?logout=true'> Déconnexion </a>";
 
+
+
+
 }
 else if(empty($_SESSION)){
     $out = '<div class="form-container">

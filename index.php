@@ -3,10 +3,8 @@ require_once 'includes/db.inc.php';
 include 'includes/user.inc.php';
 $out = "";
 if (!empty($_SESSION["user_session"])) {
+    
    $out = "Bonjour , <a href='logout.php?logout=true'> Déconnexion </a>";
-
-
-
 
 }
 else if(empty($_SESSION)){

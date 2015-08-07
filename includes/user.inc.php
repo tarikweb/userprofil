@@ -212,3 +212,9 @@ function user_image_upload($user_id, $db_connexion) {
            </form>';
     return $form;
 }
+
+// fonction de récupperation de l'utilisateur 
+function user_edit($user_id, $db_connexion){
+    
+
+}

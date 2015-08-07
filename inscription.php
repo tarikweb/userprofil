@@ -1,7 +1,7 @@
 
 <?php
-require_once 'db.inc.php';
-include 'user.inc.php';
+require_once 'includes/db.inc.php';
+include 'includes/user.inc.php';
 if (!empty($_SESSION["user_session"])) {
     header("Location:profile.php");
 }

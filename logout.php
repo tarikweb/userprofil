@@ -1,7 +1,7 @@
 <?php
 
-require_once 'db.inc.php';
-include 'user.inc.php';
+require_once 'includes/db.inc.php';
+include 'includes/user.inc.php';
 
 if (isset($_GET["logout"]) && ($_GET["logout"] == "true")) {
     user_logout($db_connexion);

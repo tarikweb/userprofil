@@ -1,6 +1,6 @@
 <?php
-require_once 'db.inc.php';
-include 'user.inc.php';
+require_once 'includes/db.inc.php';
+include 'includes/user.inc.php';
 // Redirection si pas connecté
 if (empty($_SESSION["user_session"])) {
     header("Location:index.php");
@@ -67,7 +67,7 @@ switch ($action) {
 
                     </ul>
                 </div>
-                <div class="col-md-9"> 
+                <div class="col-md-9">
                     <p>Bienvenu sur Votre profil</p>
                     <?php
                     echo $out;

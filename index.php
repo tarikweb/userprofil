@@ -86,8 +86,10 @@ echo "</ul>
 echo "<div class='col-md-9'>";
 
 if(isset($_GET["id"])){
-   echo "<p>".utf8_encode(category_edit($_GET["id"], $db_connexion))."</p> "; 
+  $categorie = category_edit($_GET["id"], $db_connexion);
+  echo "<p>".utf8_encode($categorie["nom"])."</p> "; 
 }
+
 
 
 $statement = $db_connexion->query("SELECT * FROM produit $where;");

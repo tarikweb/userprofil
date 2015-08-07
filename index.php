@@ -50,9 +50,16 @@ else if(empty($_SESSION)){
             $where = isset($_GET['id'])?"where id_categorie =".$_GET["id"]:" where 1";
            
     echo "<div class='col-md-3'>
-          <ul>"; 
+          <ul>";
+          try{
+            $statement = $db_connexion->prepare("SELECT * FROM categorie where id_parent=:parent and niveau=:niveau;");
+            $statement->execute(array(":parent" => 0 , ":niveau" => 1));
+            $categories = $statement->fetchAll();
+            category_children($categories , 1 , $db_connexion); // niveau de départ
+          }catch(PDOException $e){
+            echo $e->getMessage();
+          }
           
-          category_children(1 , $db_connexion);
    echo "</ul>
         </div>";
 

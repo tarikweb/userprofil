@@ -26,7 +26,8 @@ function resize_image($fichier, $extension = 'jpeg') {
     $nomFichierFinal = "300x400_" . $fichier;
     $imageRender = "image" . trim($extension, '.');
 
-    $imageRender($imageFinale, $nomFichierFinal, 100); // la fonction qui va créer la nouvelle foto en dure sur le serveur redimensionnée
+    // ajout d'un @ au début de la fonction supprime les warning générés 
+    @$imageRender($imageFinale, $nomFichierFinal, 100); // la fonction qui va créer la nouvelle foto en dure sur le serveur redimensionnée
     imagedestroy($imageSource);
     echo "Avatar redimensionné avec succés";
 }

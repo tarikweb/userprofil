@@ -48,40 +48,13 @@ else if(empty($_SESSION)){
             </div>
             <?php
             $where = isset($_GET['id'])?"where id_categorie =".$_GET["id"]:" where 1";
-            $statement = $db_connexion->query("SELECT * FROM categorie ORDER BY niveau ASC;");
-            $categories = $statement->fetchAll();
+           
     echo "<div class='col-md-3'>
-          <ul>";
-         foreach($categories as $categorie){
-          if($categorie["niveau"] == 1){ // 1er niveau
-              $plus = '--';
-              echo "<li><a href='?id=".$categorie["id_categorie"]."'>   ".$plus.' '.utf8_encode($categorie["nom"])."</a></li>";
-             
-              // 2 eme niveau
-              $query = "SELECT * FROM categorie where id_parent=:id_categorie";//
-              $statement = $db_connexion->prepare($query);
-              $statement->bindParam(":id_categorie",$categorie["id_categorie"]); // Liaison param :nom , et $_POST["nom"]
-                  $statement->execute(); // Execution de la requête préparée 
-                  $results = $statement->fetchAll(); // Methode fetch de l'objet statement 
-                  foreach($results as $result){
-                    $plus ='----';
-                    echo "<li><a href='?id=".$result["id_categorie"]."'>".$plus.' '.utf8_encode($result["nom"])."</a></li>";
-
-              // 3 eme niveau
-              $query = "SELECT * FROM categorie where id_parent=:id_categorie";// lower fonction sql qui met les caractére en miniscule
-              $statement = $db_connexion->prepare($query);
-              $statement->bindParam(":id_categorie",$result["id_categorie"]); // Liaison param :nom , et $_POST["nom"]
-                  $statement->execute(); // Execution de la requête préparée 
-                  $results = $statement->fetchAll(); // Methode fetch de l'objet statement 
-                  foreach($results as $result){
-                    $plus ='------';
-                     echo "<li><a href='?id=".$result["id_categorie"]."'>".$plus.' '.utf8_encode($result["nom"])."</a></li>";
-                   }
-              }
-            }
-         }
-echo "</ul>
-     </div>";
+          <ul>"; 
+          
+          category_children(1 , $db_connexion);
+   echo "</ul>
+        </div>";
 
 echo "<div class='col-md-9'>";
 

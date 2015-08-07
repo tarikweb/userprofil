@@ -2,9 +2,35 @@
 require_once 'includes/db.inc.php';
 include 'includes/user.inc.php';
 // Redirection si pas connecté
-if (empty($_SESSION["user_session"])) {
-    header("Location:index.php");
+$out = "";
+if (!empty($_SESSION["user_session"])) {
+
+    $userID = $_SESSION["user_session"];
+    $output = '<div class="right bottom-aligned-text"><a href="logout.php?logout=true">Déconnexion</a></div>';
+    $output .= '<div class="right"><h1>Bonjour <a href="profile.php">'.user_edit($db_connexion, $userID)['user_name']."</a></h1></div>";
+
+
 }
+else if(empty($_SESSION)){
+    $output = '<form action="login.php" method="post" class="navbar-form navbar-right">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                <input type="text" class="form-control" name="txt_uname_email" placeholder="Pseudo ou e-mail" size="15" required />
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                <input type="password" class="form-control" name="txt_password" placeholder="Mot de passe" size="15" required />
+            </div>
+            <button type="submit" name="btn-login" class="btn btn-primary">
+                <i class="glyphicon glyphicon-log-in"></i>&nbsp;Connectez vous
+            </button>
+            </br>
+            <div class="right">
+            <label>vous n\'avez pas de compte? <a href="inscription.php">Inscrivez-vous</a></label>
+            </div>
+        </form>';
+}
+
 // récupperation de l'identifiant de la session
 $user_id = $_SESSION["user_session"];
 $action = isset($_GET["action"]) ? $_GET["action"] : "";
@@ -56,8 +82,10 @@ switch ($action) {
     </head>
     <body>
         <div class="container">
-            <div class="header">
-                <div class="right"><a href="logout.php?logout=true"> Déconnexion </a></div>
+           <div class="header">
+                <div class="right">
+                       <?php echo $output ?>
+                 </div>
             </div>
             <div class="row">
                 <div class="col-md-3">

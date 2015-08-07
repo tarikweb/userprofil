@@ -80,7 +80,6 @@ else if(empty($_SESSION)){
               }
             }
          }
-
 echo "</ul>
      </div>";
 

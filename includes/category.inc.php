@@ -5,3 +5,8 @@ $statement = $db_connexion->query("SELECT * FROM categorie where id_categorie = 
 $categorie = $statement->fetch();
 return $categorie;
 }
+
+function category_children($categories , $level){
+
+
+}

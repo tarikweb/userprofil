@@ -13,15 +13,12 @@ h2
 {
     font-family:Tahoma, Geneva, sans-serif;
     color:#00a2d1;
+    font-size: 15px;
 }
 .form-container
 {
-    width:500px;
     margin:0 auto;
     background:#fff;
-    padding: 25px;
-    box-shadow: 0px 0px 2px rgba(0,0,0,0.4);
-    border-radius:3px;
 }
 button
 {
@@ -43,17 +40,17 @@ a
 .header
 {
     text-align:center;
-    font-size:25px;
+    font-size:15px;
     color:#fff;
     background:#00a2d1;
-    height:60px;
+    height:170px;
     width:100%;
 }
 .header a
 {
     color:#f9f9f9;
     font-family:Verdana, Geneva, sans-serif;
-    font-size:25px;
+    font-size:15px;
     text-decoration:none;
     position:relative;
     top:15px;
@@ -85,4 +82,12 @@ a
     color:#004567;
     width:800px;
     margin:0 auto;
+}
+.form-control{
+    width:30%;
+    display:inline;
+}
+input.btn-block[type="button"], input.btn-block[type="reset"], input.btn-block[type="submit"] {
+    width: 30%;
+    float : right;
 }

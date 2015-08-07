@@ -8,7 +8,7 @@ if (isset($_POST["btn-login"])) {
     $userpass = $_POST["txt_password"];
     // user_login fonction qui permet d'authentifier un utilisateur
     if (user_login($username, $usermail, $userpass, $db_connexion)) {
-        header("location:profile.php");
+        header("location:index.php");
     }
     else {
         echo "erreur de connexion";

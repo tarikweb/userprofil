@@ -1,29 +1,27 @@
 <?php
 require_once 'includes/db.inc.php';
 include 'includes/user.inc.php';
-
+$out = "";
 if (!empty($_SESSION["user_session"])) {
-   
+   $out = "Bonjour , <a href='logout.php?logout=true'> Déconnexion </a>";
 
 }
-else{
-    $form = ' <form action="login.php" method="post">
-                            <h2>Connectez-vous.</h2><hr />
-                            <?php
-                            ?>
-                            <div class="form-group">
-                                <input type="text" class="form-control" name="txt_uname_email" placeholder="Username or E mail ID" />
-                            </div>
-                            <div class="form-group">
-                                <input type="password" class="form-control" name="txt_password" placeholder="Your Password"  />
-                            </div>
-                            <div class="clearfix"></div><hr />
-                            <div class="form-group">
-                                <input type="submit" name="btn-login" class="btn btn-block btn-primary" value="Connectez vous">
-                            </div>
-                            <br />
-                            <label>vous n\'avez pas de compte<a href="inscription.php">Inscrivez-vous</a></label>
-                        </form>';
+else if(empty($_SESSION)){
+    $out = '<div class="form-container">
+            <form action="login.php" method="post">
+             <h2>Connectez-vous.</h2>
+            <div class="form-group">
+            <input type="text" class="form-control" name="txt_uname_email" placeholder="Username or E mail ID" />
+            
+            <input type="password" class="form-control" name="txt_password" placeholder="Your Password"  />
+            </div>
+            <div class="form-group">
+            <input type="submit" name="btn-login" class="btn btn-block btn-primary" value="Connectez vous">
+            </div>
+               
+            <label>vous n\'avez pas de compte<a href="inscription.php">Inscrivez-vous</a></label>
+            </form>
+            </div>';
 }
 
 
@@ -40,16 +38,9 @@ else{
         <div class="container">
             <div class="header">
                 <div class="right"> 
-                    <div class="form-container">
-
-                <div class="row" style="">
-                    <div class="row" style="">
-                       
-                    </div>
-                </div>
-            </div></div>
+                       <?php echo $out ?>
+                 </div>
             </div>
-         
         </div>
 
     </body>

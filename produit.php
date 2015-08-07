@@ -2,14 +2,22 @@
 require_once 'includes/db.inc.php';
 include 'includes/user.inc.php';
 include 'includes/category.inc.php';
+include 'includes/product.inc.php';
 $out = "";
 if (!empty($_SESSION["user_session"])) {
 
     $userID = $_SESSION["user_session"];
     $out = '<div class="right bottom-aligned-text"><a href="logout.php?logout=true">Déconnexion</a></div>';
-    $out .= '<div class="right"><h1>Bonjour <a href="profile.php">'.user_edit($db_connexion, $userID)['user_name']."</a></h1></div>";
-
-
+   
+    $out .= '<div class="right"><h1>Bonjour <a href="profile.php">'.user_edit($db_connexion, $userID)['user_name']."</a></h1></div>"; 
+  if(isset($_SESSION["cart"])){
+  	$cart = $_SESSION["cart"];
+  	var_dump($cart);
+  }
+    $out .= '<br><div >nom du produit : , qty : 
+                <a href="panier.php?action=delete&id=">Supprimer</a>
+                <br/><a href="">Voir mon panier</a>
+                </div>';
 }
 else if(empty($_SESSION)){
     $out = '<form action="login.php" method="post" class="navbar-form navbar-right">
@@ -35,14 +43,13 @@ else if(empty($_SESSION)){
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Connexion</title>
+        <title>Produit </title>
         <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" type="text/css"  />
         <link rel="stylesheet" href="style.css" type="text/css"  />
     </head>
     <body>
         <div class="container">
             <div class="header">
-                <div class="left"><a href="index.php">logo</a></div>
                 <div class="right">
                        <?php echo $out ?>
                  </div>
@@ -63,32 +70,33 @@ else if(empty($_SESSION)){
           
    echo "</ul>
         </div>";
-
-echo "<div class='col-md-9'>";
-
-if(isset($_GET["id"])){
-  $categorie = category_edit($_GET["id"], $db_connexion);
-  echo "<p>".utf8_encode($categorie["nom"])."</p> "; 
-}
-
-
-
-$statement = $db_connexion->query("SELECT * FROM produit $where;");
-$produits = $statement->fetchAll();
-
-     foreach($produits as $produit){
-         echo "<div >
-          <p>".$produit["nom"]."</p> 
-          <p>".$produit["reference"]."</p> 
-          <p>".$produit["prix"]."</p> 
-          <p>".$produit["prixht"]."</p> ";
-         $category = category_edit($produit["id_categorie"], $db_connexion);
-         echo "<p>".utf8_encode($category["nom"])."</p> 
-         <p><a href='produit.php?id=".$produit["id_produit"]."'>Plus d'info</a></p>
-         </div>";
-     }
-echo "
-      ";
+   echo "<div class='col-md-9'>";
+   if(isset($_GET["id"])){
+	 // Recupperation de l'id produit
+	 $id = $_GET["id"];
+	 $produit = edit_product($id,$db_connexion);
+	 if(isset($_POST["btn-cart"])){
+	 	$_SESSION["cart"][] = array('id' => $_POST["id_produit"] , 'qty' =>  $_POST["qty"]);
+	 	header("Location:produit.php?id=$id");
+	 }
+	 echo "<div class='row'>
+	       <div class='col-md-7'>
+           <p>".$produit["nom"]."</p>
+           <p>".$produit["prixht"]."</p>
+           <p>".$produit["prix"]."</p>
+           <p>".$produit["reference"]."</p>
+           </div>
+           <div class='col-md-3'>
+            <form action='' method='post'>
+            <div class='group-form'>
+              <input type='text' name='qty'>
+              <input type='hidden' name='id_produit' value='".$id."'>
+            </div>
+            <input type='submit' value='ajouter au pannier' name='btn-cart'>
+            </form>
+           </div>
+	      </div>";
+   }
 echo "</div>"; 
 ?>
         </div>

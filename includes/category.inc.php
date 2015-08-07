@@ -10,7 +10,7 @@ function category_children($categories, $level = 1, $db_connexion){
 	$plus = str_repeat('--',$level); // répéte autant de fois la chaine '--' 
 	$level++;
     foreach($categories as $categorie){
-       echo "<li><a href='?id=".$categorie["id_categorie"]."'>$plus".utf8_encode($categorie["nom"])."</a></li>";
+       echo "<li><a href='index.php?id=".$categorie["id_categorie"]."'>$plus".utf8_encode($categorie["nom"])."</a></li>";
        $query = "SELECT * FROM categorie where id_parent=:id_categorie and niveau=:level";//
        $statement = $db_connexion->prepare($query);
        $statement->bindParam(":id_categorie",$categorie["id_categorie"]);

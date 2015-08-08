@@ -1,24 +1,26 @@
 <?php
 require_once 'includes/db.inc.php';
 include 'includes/user.inc.php';
+include 'includes/product.inc.php';
 // Redirection si pas connecté
 $out = "";
 if (!empty($_SESSION["user_session"])) {
 
     $userID = $_SESSION["user_session"];
     $output = '<div class="right bottom-aligned-text"><a href="logout.php?logout=true">Déconnexion</a></div>';
-    $output .= '<div class="right"><h1>Bonjour <a href="profile.php">'.user_edit($db_connexion, $userID)['user_name']."</a></h1></div>";
- if(isset($_SESSION["cart"])){
-    $cart = $_SESSION["cart"];
-    var_dump($cart);
-  }
-    $out .= '<br><div >nom du produit : , qty : 
-                <a href="panier.php?action=delete&id=">Supprimer</a>
+    $output .= '<div class="right"><h1>Bonjour <a href="profile.php">' . user_edit($db_connexion, $userID)['user_name'] . "</a></h1></div>";
+    if (isset($_SESSION["cart"])) {
+        $cart = $_SESSION["cart"];
+        foreach ($cart as $c) {
+            $produit = edit_product($c['id'], $db_connexion);
+            $output .= '<div>nom du produit ' . $produit["nom"] . ' : , qty :' . $c["qty"] . ' 
+                <a href="panier.php?action=delete&id=' . $c['id'] . '" ><span class="glyphicon glyphicon-remove"></span></a>
                 <br/><a href="">Voir mon panier</a>
                 </div>';
-
+        }
+    }
 }
-else if(empty($_SESSION)){
+else {
     $output = '<form action="login.php" method="post" class="navbar-form navbar-right">
             <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
@@ -89,10 +91,11 @@ switch ($action) {
     </head>
     <body>
         <div class="container">
-           <div class="header">
+            <div class="header">
+                <div class="left"><a href="index.php">logo</a></div>
                 <div class="right">
-                       <?php echo $output ?>
-                 </div>
+                    <?php echo $output ?>
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-3">

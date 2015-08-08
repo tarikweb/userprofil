@@ -11,6 +11,6 @@ if (isset($_POST["btn-login"])) {
         header("location:index.php");
     }
     else {
-        echo "erreur de connexion";
+        header("Location:index.php?erreur=true");
     }
 }

@@ -1,7 +1,6 @@
 <?php
 
 include 'util.inc.php'; // Nouveau fichier utilitaire diverses fonctions de traitement
-
 // fonction inscription utilisateur
 function user_register($username, $usermail, $userpass, $db_connexion) {
     try {
@@ -52,7 +51,7 @@ function user_logout($db_connexion) {
         $db_connexion->query($sql);
         $db_connexion->exec();
         // destruction de la session
-        session_destroy();
+        //session_destroy();
         unset($_SESSION["user_session"]);
         return true;
     }
@@ -139,7 +138,7 @@ function user_update($user_id, $db_connexion) {
     }
 
     $form = (isset($success) ? $success : "")
-            . $err
+            . (isset($err) ? $err : "")
             . '<form action="?action=modifier&id=' . $user_id . '" method="post">
             <div class="form-group">
                 <input type="text" class="form-control" name="user_name" placeholder="Username " value="' . $row_user['user_name'] . '"
@@ -213,16 +212,15 @@ function user_image_upload($user_id, $db_connexion) {
     return $form;
 }
 
-
-function user_edit($db_connexion, $userID){
-  try {
-    $sql = 'SELECT * FROM users where id_user=:user';
-    $statement = $db_connexion->prepare($sql);
-    $statement->execute(array(':user'=>$userID));
-    $userRow = $statement->fetch();
-    return $userRow;
-  } catch (Exception $e) {
-    echo $e->getMessage();
-  }
+function user_edit($db_connexion, $userID) {
+    try {
+        $sql = 'SELECT * FROM users where id_user=:user';
+        $statement = $db_connexion->prepare($sql);
+        $statement->execute(array(':user' => $userID));
+        $userRow = $statement->fetch();
+        return $userRow;
+    }
+    catch (Exception $e) {
+        echo $e->getMessage();
+    }
 }
-

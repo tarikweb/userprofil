@@ -5,6 +5,26 @@ include 'includes/user.inc.php';
 if (!empty($_SESSION["user_session"])) {
     header("Location:profile.php");
 }
+else {
+    $output = '<form action="login.php" method="post" class="navbar-form navbar-right">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                <input type="text" class="form-control" name="txt_uname_email" placeholder="Pseudo ou e-mail" size="15" required />
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                <input type="password" class="form-control" name="txt_password" placeholder="Mot de passe" size="15" required />
+            </div>
+            <button type="submit" name="btn-login" class="btn btn-primary">
+                <i class="glyphicon glyphicon-log-in"></i>&nbsp;Connectez vous
+            </button>
+            </br>
+            <div class="right">
+            <label>vous n\'avez pas de compte? <a href="inscription.php">Inscrivez-vous</a></label>
+            </div>
+        </form>';
+}
+
 if (isset($_POST["btn-login"])) { // premiere validation : action de cliquer
     $username = $_POST["txt_uname_user"];
     $usermail = $_POST["txt_uname_email"];
@@ -58,6 +78,12 @@ if (isset($_POST["btn-login"])) { // premiere validation : action de cliquer
 </head>
 <body>
     <div class="container">
+        <div class="header">
+            <div class="left"><a href="index.php">logo</a></div>
+            <div class="right">
+                <?php echo $output ?>
+            </div>
+        </div>
         <div class="form-container">
             <form action="inscription.php" method="post">
                 <h2>Inscrivez-vous.</h2>

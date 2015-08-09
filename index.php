@@ -44,7 +44,7 @@ else if (!isset($_SESSION["user_session"])) {
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Connexion</title>
+        <title>Accueil</title>
         <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" type="text/css"  />
         <link rel="stylesheet" href="style.css" type="text/css"  />
     </head>
@@ -58,14 +58,14 @@ else if (!isset($_SESSION["user_session"])) {
             </div>
             <?php
             $where = isset($_GET['id']) ? "where id_categorie =" . $_GET["id"] : " where 1";
-
             echo "<div class='col-md-3'>
           <ul>";
             try {
-                $statement = $db_connexion->prepare("SELECT * FROM categorie where id_parent=:parent and niveau=:niveau;");
-                $statement->execute(array(":parent" => 0, ":niveau" => 1));
-                $categories = $statement->fetchAll();
-                category_children($categories, 1, $db_connexion); // niveau de départ
+                 $statement = $db_connexion->prepare("SELECT max(niveau) as max FROM categorie ");
+                 $statement->execute();
+                 $level = $statement->fetch();
+                 $maxLevel = $level["max"];
+                 category_children(0, 1, $db_connexion); // niveau de départ
             }
             catch (PDOException $e) {
                 echo $e->getMessage();

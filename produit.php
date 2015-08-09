@@ -63,10 +63,11 @@ else if (!isset($_SESSION["user_session"])) {
             echo "<div class='col-md-3'>
           <ul>";
             try {
-                $statement = $db_connexion->prepare("SELECT * FROM categorie where id_parent=:parent and niveau=:niveau;");
-                $statement->execute(array(":parent" => 0, ":niveau" => 1));
-                $categories = $statement->fetchAll();
-                category_children($categories, 1, $db_connexion); // niveau de départ
+                $statement = $db_connexion->prepare("SELECT max(niveau) as max FROM categorie ");
+                $statement->execute();
+                $level = $statement->fetch();
+                $maxLevel = $level["max"];
+                category_children(0, 1 ,  $db_connexion); // niveau de départ
             }
             catch (PDOException $e) {
                 echo $e->getMessage();
@@ -95,9 +96,9 @@ else if (!isset($_SESSION["user_session"])) {
                             $cart = $_SESSION["cart"];
                             $ids = array();
                             $qtys = array();
-                            foreach ($cart as $c) {
-                                $ids[] = $c["id"];
-                                $qtys[] = $c["qty"];
+                            foreach ($cart as $key => $c) {
+                                $ids[$key] = $c["id"];
+                                $qtys[$key] = $c["qty"];
                             }
                             if (!in_array($_POST["id_produit"], $ids)) {
                                 $_SESSION["cart"][] = array('id' => $_POST["id_produit"],
@@ -115,14 +116,15 @@ else if (!isset($_SESSION["user_session"])) {
                     }
                 }
                 echo "<div class='row'>
+                    <br/>
 	       <div class='col-md-7'>
-           <p>" . $produit["nom"] . "</p>
-           <p>" . $produit["prixht"] . "</p>
-           <p>" . $produit["prix"] . "</p>
-           <p>" . $produit["reference"] . "</p>
+           <p>Nom : " . $produit["nom"] . "</p>
+           <p>Réference : " . $produit["reference"] . "</p>
            </div>
            <div class='col-md-3'>
             <form action='' method='post'>
+             <p>Prix HT : " . $produit["prixht"] . "</p>
+             <p>Prix TTC : " . $produit["prix"] . "</p>
             <div class='group-form'>
               <input type='text' name='qty'>
               <input type='hidden' name='id_produit' value='" . $id . "'>

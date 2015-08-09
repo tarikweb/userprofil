@@ -118,7 +118,7 @@ if (isset($_POST["btn-login"])) { // premiere validation : action de cliquer
                     <input type="submit" name="btn-login" class="btn btn-block btn-primary" value="Inscrivez vous" >
                 </div>
                 <br />
-                <label>Vous avez un compte<a href="index.php">connectez-vous</a></label>
+                <label>Vous avez un compte <a href="index.php">connectez-vous</a></label>
             </form>
         </div>
     </div>

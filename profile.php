@@ -21,23 +21,7 @@ if (!empty($_SESSION["user_session"])) {
     }
 }
 else {
-    $output = '<form action="login.php" method="post" class="navbar-form navbar-right">
-            <div class="input-group">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                <input type="text" class="form-control" name="txt_uname_email" placeholder="Pseudo ou e-mail" size="15" required />
-            </div>
-            <div class="input-group">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                <input type="password" class="form-control" name="txt_password" placeholder="Mot de passe" size="15" required />
-            </div>
-            <button type="submit" name="btn-login" class="btn btn-primary">
-                <i class="glyphicon glyphicon-log-in"></i>&nbsp;Connectez vous
-            </button>
-            </br>
-            <div class="right">
-            <label>vous n\'avez pas de compte? <a href="inscription.php">Inscrivez-vous</a></label>
-            </div>
-        </form>';
+    header("Location:inscription.php");
 }
 
 // récupperation de l'identifiant de la session
@@ -72,7 +56,7 @@ switch ($action) {
             echo $e->getMessage();
         }
         $out = '';
-        $out .= (!empty($user["user_pic"])) ? "<img src='upload/" . $user["user_pic"] . "' width='100' height='100'>" : "";
+        $out .= (!empty($user["user_pic"])) ? "<img src='upload/300x400_" . $user["user_pic"] . "' >" : "";
         $out .= "Votre pseudo : " . $user["user_name"] . "<br/>";
         $out .= "Votre email : " . $user["user_email"] . "<br/>";
         $out .= "Vous êtes membre depuis : " . $user["date_created"] . "<br/>";
